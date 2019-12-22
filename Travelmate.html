@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"lang="en" xml:lang="en">
+    <head>
+        <title>MapmyIndia Maps API: Map properties and events</title>
+        <link rel="icon" href="http://mapmyindia.com/images/favicon.ico" type="image/x-icon" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <style type="text/css">
+            html { 
+                height: 100%;
+            }
+            body { 
+                height: 100%;font-family:Verdana,sans-serif, Arial;color:#000;margin: 0; font-size:14px; padding: 0; 
+            }
+            #map {
+                position: absolute;left: 310px; top: 44px; right: 0px; bottom: 0px; border: 0px solid #cccccc;
+            }
+            #result {
+                position: absolute;
+                left: 0px; top: 44px;
+                width: 309px;
+                bottom: 0px; 
+                border: 0px solid #494848;
+                background-color: rgb(49, 48, 48);
+                overflow: auto;
+            }
+            button{
+                width: 220px;font-family:Verdana,sans-serif, Arial;font-size:12px;padding:2px 0;color:#333
+            }
+            .top-div{
+                border-bottom: 0px solid rgb(117, 113, 113);background-color: rgb(173, 173, 173); padding:10px 12px;
+            }
+            .top-div-span1{
+                font-size: 20px;  color:rgb(27, 27, 27);
+            }
+            .top-div-span2{
+                font-size:16px;color:#777
+            }
+            .btn-div{
+                padding: 16px 12px 6px 38px;
+            }
+            .msg-cont{
+                padding:6px 12px 1px; border-bottom:1px solid #e9e9e9;
+            }
+            .msg-list{
+                line-height: 20px; font-size: 12px; color: #555;
+            }
+            
+            .map_marker{
+                position:relative;width:34px;height:48px
+            }
+            marker text span css/
+            .my-div-span{
+                position: absolute;left:1.5em;right: 1em;top:1.4em;bottom:2.5em;font-size:9px;font-weight:bold;width:1px;color:black;
+            }
+            button{
+                border-radius: 15px 25px 15px 25px; border-width:0px;
+            }
+            .a{ text-decoration:none; font-size: 15px; color:white }
+        </style>
+
+        <!--put your map api javascript url with key here-->
+        <script src="https://apis.mapmyindia.com/advancedmaps/v1/9iujzmlmabip2c5s6wdjd3gud2tv1oe9/map_load?v=1.3"></script>
+        <!--<script src="js/leaflet.rotatedMarker.js"></script>-->
+		
+    </head>
+    <body>
+        <div class="top-div">
+            <a href="mapex.html" style="text-decoration: none;"><span class="top-div-span1">Travel Diaries </span></a> 
+            <span class="top-div-span2">Your friends Diaries</span>
+        </div>
+        <div id="result">
+            <h4 style="color:aquamarine">Wander Buddies ;)</h4>            
+            <div class="btn-div"><a class='a' href="samp.html">Sampreeth Amith</a></div>
+            <div class="btn-div"><a class='a' href="raks.html">Rakshith</a></div>
+            
+            <div class="msg-cont">
+                <ul class="msg-list">
+                    <li>Double click anywhere on the map to add a marker.</li>
+                    <li>Click/drag marker to see events.</li>
+                </ul>
+            </div>
+            
+        </div>
+        <div id="map"></div>
+        <script>
+            var map = null;
+            var marker = [];
+            var latitudeArr = [13.384810,13.418172,13.136777,12.998922,12.886142,12.934924];
+            var longitudeArr = [77.672536,77.683026,77.563155,77.591905,77.582394,77.611349];
+            var pth = window.location.href;/get path of image folder/
+            var full_path = pth.replace(pth.substr(pth.lastIndexOf('/') + 1), '');
+            var mk1,mk2,mk3,mk4,mk5;
+            window.onload = function () {
+                var pt1 = new L.latLng(13.0033, 76.1004);/WGS location object/
+                var pt2 = new L.latLng(13.1623, 75.8679);/WGS location object/
+                var pt3 = new L.latLng(15.3350, 76.4600);/WGS location object/
+                
+                var pt4 = new L.latLng(15.2993, 74.1240);/WGS location object/
+                var pt5 = new L.latLng(12.2958, 76.6394);/WGS location object/
+                var pt6 = new L.latLng(13.3161, 75.7720);/WGS location object/
+                
+                map = new MapmyIndia.Map('map', {center: [12.934987, 77.614086], zoomControl: true,zoom:6, hybrid: true});
+                /*
+                 1. Create a MapmyIndia Map by simply calling new MapmyIndia.Map() and passing it a html div id, all other parameters are optional...
+                 2. All leaflet mapping functions can be called simply by using "L" object.
+                 3. In future, MapmyIndia may extend the customised/forked Leaflet object to enhance mapping functionality for developers, 
+                 which will be clearly documented in the MapmyIndia API documentation section.
+                 */
+                /**map-events*/
+                map.on("dblclick", function (e) {
+                    var title = "Text marker sample!";
+                    marker.push(addMarker(e.latlng, "", title));
+                });
+                var cont1 = "<div><h2 style=\"font: bold 16px arial helvetica\">Hassan</h2>" +
+                        "<p style=\"font: italic 14px/20px times\">180km from Bangalore.</p>" +
+                        "<p style=\"font: 12px/14px Verdana\;padding-top: 10px;text-indent: 30px\">" +
+                        "Nandi Hills (Anglicised forms include Nandidurg and Nandydoorg) is an ancient hill fortress built by,<br>" +
+                        "Ganga Dynasty and later enlarged and strengthened by Tipu Sulthan in southern India, in the Chikkaballapur district of Karnataka state.<br>" +
+                        "It is 10 km from Chickballapur town and approximately 60 km from the city of Bengaluru </p>";
+
+                var cont2 = "<div><h2 style=\"font: bold 16px arial helvetica\">Belur</h2>" +
+                        "<p style=\"font: italic 14px/20px times\">Best Night Trek Hill.</p>" +
+                        "<p style=\"font: 12px/14px Verdana\;padding-top: 10px;text-indent: 30px\">" +
+                        "The alluring Skandagiri Hills are open to tourists for all parts of the year. However, the best time to visit Skandagiri is between the winter months of November to January as <br>" +
+                        "the surrounding greenery and hills offer picturesque views in the winter dawn. One can visit the hills for trekking also during the summer months.</p>";   
+
+                var cont3 = "<div><h2 style=\"font: bold 16px arial helvetica\">Hampi</h2>" +
+                        "<p style=\"font: italic 14px/20px times\"></p>" +
+                        "<p style=\"font: 12px/14px Verdana\;padding-top: 10px;text-indent: 30px\">" +
+                        "Avalahalli Off Sarjapur Road is a bustling residential location in western Bengaluru. It is popular owing to the presence of Gavi Gangadhareshwara Temple. Ganapathi Nagar, New BDA Layout, Srinagar , Telecom Colony, Muneshwara Block and Girinagar are some popular localities situated in the neighbourhood. The locality enjoys superb connectivity to all parts of the city." +
+                        "But guess what, this paragraph also has custom style.</p>";
+
+                
+
+                
+                var cont4 = "<div><h2 style=\"font: bold 16px arial helvetica\">Goa</h2>" +
+                        "<p style=\"font: 12px/14px Verdana\;padding-top: 10px;text-indent: 30px\">" +
+                        "Nandi Hills (Anglicised forms include Nandidurg and Nandydoorg) is an ancient hill fortress built by,<br>" +
+                        "Ganga Dynasty and later enlarged and strengthened by Tipu Sulthan in southern India, in the Chikkaballapur district of Karnataka state.<br>" +
+                        "It is 10 km from Chickballapur town and approximately 60 km from the city of Bengaluru </p>";
+
+                var cont5 = "<div><h2 style=\"font: bold 16px arial helvetica\">Mysuru</h2>" +
+                        "<p style=\"font: italic 14px/20px times\">Best Trek Hill. </p>" +
+                        "<p style=\"font: 12px/14px Verdana\;padding-top: 10px;text-indent: 30px\">" +
+                        "The alluring Skandagiri Hills are open to tourists for all parts of the year. However, the best time to visit Skandagiri is between the winter months of November to January as <br>" +
+                        "the surrounding greenery and hills offer picturesque views in the winter dawn. One can visit the hills for trekking also during the summer months.</p>";   
+
+                var cont6 = "<div><h2 style=\"font: bold 16px arial helvetica\">Chikkamagaluru</h2>" +
+                        "<p style=\"font: italic 14px/20px times\"></p>" +
+                        "<p style=\"font: 12px/14px Verdana\;padding-top: 10px;text-indent: 30px\">" +
+                        "Avalahalli Off Sarjapur Road is a bustling residential location in western Bengaluru. It is popular owing to the presence of Gavi Gangadhareshwara Temple. Ganapathi Nagar, New BDA Layout, Srinagar , Telecom Colony, Muneshwara Block and Girinagar are some popular localities situated in the neighbourhood. The locality enjoys superb connectivity to all parts of the city." +
+                        "But guess what, this paragraph also has custom style.</p>";
+
+                
+                mk1 = addMarker(pt1, '', "Rakshith").addTo(map);
+                mk2 = addMarker(pt2, '', "Rakshith").addTo(map);
+                mk3 = addMarker(pt3, '', "Rakshith").addTo(map);
+                
+                
+                mk1.bindPopup(cont1);
+                mk2.bindPopup(cont2);
+                mk3.bindPopup(cont3);
+                
+                mk4 = addMarker(pt4, '', "Sampreeth").addTo(map);
+                mk5 = addMarker(pt5, '', "Sampreeth").addTo(map);
+                mk6 = addMarker(pt6, '', "Sampreeth").addTo(map);
+               
+                
+                mk4.bindPopup(cont4);
+                mk5.bindPopup(cont5);
+                mk6.bindPopup(cont6);
+
+            };
+            function addMarker(position, icon, title, draggable) {
+                /* position must be instance of L.LatLng that replaces current WGS position of this object. Will always return current WGS position.*/
+                var event_div = document.getElementById("event-log");
+                if (icon == '') {
+                    var mk = new L.Marker(position, {draggable: draggable, title: title});/*marker with a default icon and optional param draggable, title */
+                    mk.bindPopup(title);
+                } else {
+                    var mk = new L.Marker(position, {icon: icon, draggable: draggable, title: title});/*marker with a custom icon */
+                    mk.bindPopup(title);
+                }
+                map.addLayer(mk);/add the marker to the map/
+                /* marker events:*/
+                mk.on("click", function (e) {
+                    event_div.innerHTML = "Marker clicked<br>" + event_div.innerHTML;
+                });
+                return mk;
+            }
+            function mapmyindia_fit_markers_into_bound() {
+                var maxlat = Math.max.apply(null, latitudeArr);
+                var maxlon = Math.max.apply(null, longitudeArr);
+                var minlat = Math.min.apply(null, latitudeArr);
+                var minlon = Math.min.apply(null, longitudeArr);
+                var southWest = L.latLng(maxlat, maxlon);/south-west WGS location object/
+                var northEast = L.latLng(minlat, minlon);/north-east WGS location object/
+                var bounds = L.latLngBounds(southWest, northEast);/This class represents bounds on the Earth sphere, defined by south-west and north-east corners/
+                map.fitBounds(bounds);/Sets the center map position and level so that all markers is the area of the map that is displayed in the map area/
+            }
+            /function to remove  markers from map/
+            function mapmyindia_removeMarker() {
+                var markerlength = marker.length;
+                if (markerlength > 0) {
+                    for (var i = 0; i < markerlength; i++) {
+                        map.removeLayer(marker[i]);/* deletion of marker object from the map */
+                    }
+                }
+                delete marker;
+                marker = [];
+                document.getElementById("event-log").innerHTML = "";
+            }
+           
+            /function to make number appear on marker/
+            function mapmyindia_number_on_marker() {
+                mapmyindia_removeMarker();
+                for (var i = 0; i < latitudeArr.length; i++) {
+                    var title = "Number marker Sample!";
+                    var icon = L.divIcon({
+                        className: 'my-div-icon',
+                        html: "<img class='map_marker'  src=" + "'https://maps.mapmyindia.com/images/2.png'>" + '<span class="my-div-span">' + (i + 1) + '</span>',
+                        iconSize: [10, 10],
+                        popupAnchor: [12, -10]
+                    });/function that creates a div over a icon and display content on the div/
+                    var postion = new L.LatLng(latitudeArr[i], longitudeArr[i]);/WGS location object/
+                    marker.push(addMarker(postion, icon, title));
+                }
+                mapmyindia_fit_markers_into_bound();
+            }
+            var mapmyindia_custom_info_window = function () {
+                
+                mk3.openPopup();
+            }
+        </script>
+    </body>
+</html>
